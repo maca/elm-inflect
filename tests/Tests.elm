@@ -35,6 +35,7 @@ examples =
     , pair "wolf" "wolves"
 
     --
+    , pair "neuropathy" "neuropathies"
     , pair "ability" "abilities"
     , pair "address" "addresses"
     , pair "agency" "agencies"
@@ -60,7 +61,6 @@ examples =
     , pair "torpedo" "torpedoes"
     , pair "veto" "vetoes"
     , pair "oasis" "oases"
-    , pair "buffalo" "buffaloes"
 
     -- (-us) (-i)
     , pair "alumnus" "alumni"
@@ -252,7 +252,8 @@ examples =
     -- underscore, dash or symbols
     , pair "my_analysis" "my_analyses"
     , pair "node_child" "node_children"
-    , pair "old-news" "old-news"
+
+    -- , pair "old-news" "old-news"
     , pair "matrix_fu" "matrix_fus"
     , pair "status_code" "status_codes"
     , pair "|ice" "|ices"
@@ -298,6 +299,46 @@ suite =
                                 always <|
                                     Expect.equal (toUpper singular)
                                         (Inflect.toSingular (toUpper plural))
+                            )
+                            examples
+                        )
+                        ()
+            ]
+        , describe "toPlural"
+            [ test "lower case string" <|
+                \_ ->
+                    Expect.all
+                        (List.map
+                            (\( singular, plural ) ->
+                                always <|
+                                    Expect.equal plural
+                                        (Inflect.toPlural singular)
+                            )
+                            examples
+                        )
+                        ()
+            , test "title case string" <|
+                \_ ->
+                    Expect.all
+                        (List.map
+                            (\( singular, plural ) ->
+                                always <|
+                                    Expect.equal (toTitleCase plural)
+                                        (Inflect.toPlural
+                                            (toTitleCase singular)
+                                        )
+                            )
+                            examples
+                        )
+                        ()
+            , test "upper case string" <|
+                \_ ->
+                    Expect.all
+                        (List.map
+                            (\( singular, plural ) ->
+                                always <|
+                                    Expect.equal (toUpper plural)
+                                        (Inflect.toPlural (toUpper singular))
                             )
                             examples
                         )
